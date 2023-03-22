@@ -47,20 +47,6 @@ public class DB {
 
     }
 
-    public void parseJSON(String jsonString){
-        try {
-            JSONArray array = new JSONArray(jsonString);
-            for (int i = 0; i < array.length(); i++)
-            {
-                JSONObject curObject = array.getJSONObject(i);
-                System.out.println("The coach for the " + curObject.getString("Date") + " session is " + curObject.getString("Coach"));
-            }
-        }
-        catch (JSONException e){
-            e.printStackTrace();
-        }
-    }
-
     public int get_mode(){
         String response= makeGETRequest(  url_main+"getMode");
        int mode=0;

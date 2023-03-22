@@ -5,10 +5,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
@@ -161,15 +158,15 @@ public class eBikey extends JFrame{
             @Override
             public void run() {
                 if(is_alarming){
-                    if(alarm_panel.getBackground().equals( new Color(0,185,13))){
-                        alarm_panel.setBackground(new Color(0,240,13));
+                    if(alarm_panel.getBackground().equals( new Color(0,200,15))){
+                        alarm_panel.setBackground(new Color(0,240,15));
                     }
                     else{
-                        alarm_panel.setBackground(new Color(0,185,13));
+                        alarm_panel.setBackground(new Color(0,200,15));
                     }
                 }
                 else
-                    alarm_panel.setBackground(new Color(0,185,13));
+                    alarm_panel.setBackground(new Color(0,185,15));
             }
         },0,400);
     }
