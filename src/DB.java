@@ -87,7 +87,20 @@ public class DB {
             {
                 JSONObject curObject = array.getJSONObject(i);
                 //System.out.println("ID: " + curObject.getString("card_number") + " Name: " + curObject.getString("name"));
-             list.add("ID: " + curObject.getInt("id") + "     Name: " + curObject.getString("name"));
+                String s="";
+                s+="ID: ";
+
+                int id=curObject.getInt("id");
+                if(String.valueOf(id).length()<3)
+                {
+                    for(int j=0;j<3-String.valueOf(id).length();j++){
+                        s+="0";
+                    }
+                }
+                s+=id;
+                s+="     Name: ";
+                s+=curObject.getString("name");
+                list.add(s);
             }
         }
         catch (JSONException e){
@@ -109,31 +122,37 @@ public class DB {
                 JSONObject curObject = array.getJSONObject(i);
                 String s="ID:";
                 int id=curObject.getInt("cardID");
-                    s+=id;
-                    s+=" | Name: ";
-                    String name=curObject.optString("name","Unknown");
-                    s+=name;
-                    if(name.length()<10){
-                        for(int j=0;j<10-name.length();j++){
-                            s+=" ";
-                        }
+                if(String.valueOf(id).length()<3)
+                {
+                    for(int j=0;j<3-String.valueOf(id).length();j++){
+                        s+="0";
                     }
+                }
+                s+=id;
+                s+="    |    Name: ";
+                String name=curObject.optString("name","Unknown");
+                s+=name;
+                if(name.length()<8){
+                    for(int j=0;j<8-name.length();j++){
+                        s+="  ";
+                    }
+                }
 
                 switch (curObject.getInt("action")){
 
                     case 0:
-                        s+=" | Denied  |  ";
+                        s+="  |  Denied  |  ";
                                 break;
                     case 1:
-                        s+=" | Unlock  |   ";
+                        s+="  |  Unlock  |   ";
                         break;
                     case 2:
-                        s+=" | Lock     |   ";
+                        s+="  |  Lock     |   ";
                         break;
                     default:
-                        s+=" |Unknown  ";
+                        s+="  | Unknown  ";
                 }
-
+                s+="     ";
                 long time_int = curObject.getLong("time");
                 Instant instant = Instant.ofEpochSecond(time_int);
                 ZoneId belgiumZoneId = ZoneId.of("Europe/Brussels");

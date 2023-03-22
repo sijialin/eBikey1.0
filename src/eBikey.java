@@ -34,6 +34,7 @@ public class eBikey extends JFrame{
     private JList RFID_list;
     private JButton alarm_history_button;
     private JScrollPane RFID_list_scrollpane;
+    private JScrollPane scan_scroll;
     private JButton scan_history_button;
 
     private DB rc;
@@ -129,8 +130,13 @@ public class eBikey extends JFrame{
             }
         });
 
+
         //set UI for scan area
         scan_list.setBackground(new Color(0,0,0,0));
+        //scan_scroll.setC
+        scan_scroll.getViewport().setOpaque(false);
+        scan_scroll.setBorder(null);
+       // scan_scroll.set
         scan_erase_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -156,12 +162,10 @@ public class eBikey extends JFrame{
             public void run() {
                 if(is_alarming){
                     if(alarm_panel.getBackground().equals( new Color(0,185,13))){
-                        System.out.println("y");
                         alarm_panel.setBackground(new Color(0,240,13));
                     }
                     else{
                         alarm_panel.setBackground(new Color(0,185,13));
-                        System.out.println("n");
                     }
                 }
                 else
