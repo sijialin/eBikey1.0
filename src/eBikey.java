@@ -1,9 +1,14 @@
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.SoftBevelBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
@@ -145,15 +150,31 @@ public class eBikey extends JFrame{
                 set_lock_state();
             }
         },0,500);
+        Timer t=new Timer();
+        t.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if(is_alarming){
+                    if(alarm_panel.getBackground().equals( new Color(0,185,13))){
+                        System.out.println("y");
+                        alarm_panel.setBackground(new Color(0,240,13));
+                    }
+                    else{
+                        alarm_panel.setBackground(new Color(0,185,13));
+                        System.out.println("n");
+                    }
+                }
+                else
+                    alarm_panel.setBackground(new Color(0,185,13));
+            }
+        },0,600);
     }
 
     private void set_lock_state(){
-
         is_locked= rc.get_lock_state()[0] == 1;
         is_alarming= rc.get_lock_state()[1] == 1;
         if(is_alarming){
             alarm_button.setIcon(new ImageIcon("src/icon/speaker.png"));
-
         }
         else {
             alarm_button.setIcon(new ImageIcon("src/icon/mute.png"));
