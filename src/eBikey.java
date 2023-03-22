@@ -167,7 +167,7 @@ public class eBikey extends JFrame{
                 else
                     alarm_panel.setBackground(new Color(0,185,13));
             }
-        },0,600);
+        },0,400);
     }
 
     private void set_lock_state(){
