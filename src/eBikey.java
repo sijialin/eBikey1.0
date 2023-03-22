@@ -1,15 +1,17 @@
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.SoftBevelBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.border.Border;
+import javax.swing.*;
 
 public class eBikey extends JFrame{
     private JPanel main_panel;
@@ -54,6 +56,7 @@ public class eBikey extends JFrame{
 
         //set UI for alarm and lock area
         alarm_button.setContentAreaFilled(false);
+
         alarm_button.addActionListener(e -> {
             if(is_alarming){
                 rc.makeGETRequest(rc.url_main+ "setAlarming/"+"0");
@@ -169,6 +172,71 @@ public class eBikey extends JFrame{
                     alarm_panel.setBackground(new Color(0,185,15));
             }
         },0,400);
+
+        alarm_history_button.setOpaque(false);
+        RFID_register_button.setOpaque(false);
+        RFID_delete_button.setOpaque(false);
+        scan_erase_button.setOpaque(false);
+
+        alarm_history_button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                alarm_history_button.setOpaque(true);
+                alarm_history_button.setForeground(Color.green);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                alarm_history_button.setOpaque(false);
+                alarm_history_button.setForeground(Color.white);
+            }
+        });
+        RFID_register_button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                RFID_register_button.setOpaque(true);
+                RFID_register_button.setForeground(Color.orange);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                RFID_register_button.setOpaque(false);
+                RFID_register_button.setForeground(Color.white);
+            }
+        });
+        RFID_delete_button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                RFID_delete_button.setOpaque(true);
+                RFID_delete_button.setForeground(Color.orange);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                RFID_delete_button.setOpaque(false);
+                RFID_delete_button.setForeground(Color.white);
+            }
+        });
+        scan_erase_button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                scan_erase_button.setOpaque(true);
+                scan_erase_button.setForeground(new Color(150,70,215));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                scan_erase_button.setOpaque(false);
+                scan_erase_button.setForeground(Color.white);
+            }
+        });
     }
 
     private void set_lock_state(){
