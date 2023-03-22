@@ -4,8 +4,6 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
@@ -118,8 +116,7 @@ public class eBikey extends JFrame{
                             int i= s.indexOf(":");
                             String result=s.substring(i+1);
                             result=result.trim();
-                            int select_card=Integer.parseInt(result);
-                            cardNumber=select_card;
+                            cardNumber= Integer.parseInt(result);
                         }
                         set_scan();
                     }
@@ -151,9 +148,9 @@ public class eBikey extends JFrame{
     }
 
     private void set_lock_state(){
-        String scan_response = rc.makeGETRequest(rc.url_main+"getMode");
-        is_locked= rc.get_lock_state(scan_response)[0] == 1;
-        is_alarming= rc.get_lock_state(scan_response)[1] == 1;
+
+        is_locked= rc.get_lock_state()[0] == 1;
+        is_alarming= rc.get_lock_state()[1] == 1;
         if(is_alarming){
             alarm_button.setIcon(new ImageIcon("src/icon/speaker.png"));
         }
@@ -168,23 +165,11 @@ public class eBikey extends JFrame{
         }
     }
     private void set_scan(){
-        if(cardNumber==0)
-        {
-            //System.out.println("selectCard:"+ cardNumber);
-            String scan_response = rc.makeGETRequest(rc.url_main+"get_scan_history_all");
-            ArrayList<String> scan_history_list=rc.get_scan_history(scan_response);
+            ArrayList<String> scan_history_list=rc.get_scan_history(cardNumber);
             scan_list.setListData(scan_history_list.toArray());
-        }
-        else{
-            String scan_response = rc.makeGETRequest(rc.url_main+"get_scan_history/"+cardNumber);
-            ArrayList<String> scan_history_list=rc.get_scan_history(scan_response);
-            scan_list.setListData(scan_history_list.toArray());
-        }
     }
     private void set_RFID_list(){
-       // rc=new DB();
-        String rfid_response = rc.makeGETRequest(rc.url_main+"RFID_list" );
-        ArrayList<String> rfid_info_list=rc.get_RFID_info(rfid_response);
+        ArrayList<String> rfid_info_list=rc.get_RFID_info();
         rfid_info_list.add(0,"ALL");
         RFID_list.setListData(rfid_info_list.toArray());
     }

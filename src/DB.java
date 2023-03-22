@@ -24,6 +24,7 @@ public class DB {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
+
             rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             sb = new StringBuilder();
             while ((line = rd.readLine()) != null)
@@ -60,10 +61,11 @@ public class DB {
         }
     }
 
-    public int get_mode(String jsonString){
+    public int get_mode(){
+        String response= makeGETRequest(  url_main+"getMode");
        int mode=0;
         try {
-            JSONArray array = new JSONArray(jsonString);
+            JSONArray array = new JSONArray(response);
             for (int i = 0; i < array.length(); i++)
             {
                 JSONObject curObject = array.getJSONObject(i);
@@ -76,10 +78,11 @@ public class DB {
         }
         return mode;
     }
-    public ArrayList<String> get_RFID_info(String jsonString){
+    public ArrayList<String> get_RFID_info(){
+        String response = makeGETRequest(url_main+"RFID_list" );
         ArrayList<String> list=new ArrayList<>();
         try {
-            JSONArray array = new JSONArray(jsonString);
+            JSONArray array = new JSONArray(response);
             for (int i = 0; i < array.length(); i++)
             {
                 JSONObject curObject = array.getJSONObject(i);
@@ -92,27 +95,29 @@ public class DB {
         }
         return list;
     }
-
-    public ArrayList<String> get_scan_history(String jsonString){
+    public ArrayList<String> get_scan_history(int cardNumber){
+        String response;
+        if(cardNumber==0)
+            response = makeGETRequest(url_main+"get_scan_history_all");
+        else
+            response = makeGETRequest(url_main+"get_scan_history/"+cardNumber);
         ArrayList<String> list=new ArrayList<>();
         try {
-            JSONArray array = new JSONArray(jsonString);
+            JSONArray array = new JSONArray(response);
             for (int i = 0; i < array.length(); i++)
             {
                 JSONObject curObject = array.getJSONObject(i);
                 String s="ID:";
-
                 int id=curObject.getInt("cardID");
                     s+=id;
                     s+=" | Name: ";
                     String name=curObject.optString("name","Unknown");
-                 s+=name;
+                    s+=name;
                     if(name.length()<10){
                         for(int j=0;j<10-name.length();j++){
                             s+=" ";
                         }
                     }
-
 
                 switch (curObject.getInt("action")){
 
@@ -130,12 +135,10 @@ public class DB {
                 }
 
                 long time_int = curObject.getLong("time");
-                //System.out.println("time:"+time_int);
                 Instant instant = Instant.ofEpochSecond(time_int);
                 ZoneId belgiumZoneId = ZoneId.of("Europe/Brussels");
                 LocalDateTime time = LocalDateTime.ofInstant(instant,belgiumZoneId);
                 s+=time;
-               // System.out.println("a: " + String.valueOf(curObject.getInt("action")) + "     t: " + curObject.getString("time"));
                 list.add(s);
             }
         }
@@ -144,23 +147,20 @@ public class DB {
         }
         return list;
     }
-
     //get the history of alarming with the state and time
-    public ArrayList<String> get_alarm_history(String jsonString){
+    public ArrayList<String> get_alarm_history(){
+        String response = makeGETRequest(url_main+"get_alarm_history" );
         ArrayList<String> list=new ArrayList<>();
         try {
-            JSONArray array = new JSONArray(jsonString);
-
+            JSONArray array = new JSONArray(response);
             for (int i = 0; i < array.length(); i++)
             {
                 JSONObject curObject = array.getJSONObject(i);
                 String s="";
                 long time_int = curObject.getLong("time");
-             //   System.out.println(curObject.getLong("time"));
                 Instant instant = Instant.ofEpochSecond(time_int);
                 ZoneId belgiumZoneId = ZoneId.of("Europe/Brussels");
                 LocalDateTime time = LocalDateTime.ofInstant(instant,belgiumZoneId);
-              //  Date time= Date.from(instant);
                 s+=time;
                 list.add(s);
             }
@@ -171,10 +171,11 @@ public class DB {
         return list;
     }
     //return the state of the lock and alarm
-    public int[] get_lock_state(String jsonString){
+    public int[] get_lock_state(){
+        String scan_response = makeGETRequest(url_main+"getMode");
         int[] mode={0,0};
         try {
-            JSONArray array = new JSONArray(jsonString);
+            JSONArray array = new JSONArray(scan_response);
             for (int i = 0; i < array.length(); i++)
             {
                 JSONObject curObject = array.getJSONObject(i);

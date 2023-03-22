@@ -45,31 +45,21 @@ public class register_dialog extends JDialog {
     }
 
     private void onOK() {
-        // add your code here
         String name= rename_textfield.getText();
         if(name.isEmpty())
             rename_label.setText("Please input a name!");
         else{
-
             DB  rc = new DB();
-            String writeMode = rc.makeGETRequest("https://studev.groept.be/api/a22ib2d02/writeMode/" + name);
+            String write_mode = rc.makeGETRequest(rc.url_main+"writeMode/" + name);
             wait_RFID_diaglog new1=new wait_RFID_diaglog(name);
             new1.setLocationRelativeTo(this);
             new1.setVisible(true);
             dispose();
         }
-
     }
 
     private void onCancel() {
-        // add your code here if necessary
         dispose();
     }
 
-   /* public static void main(String[] args) {
-        register_dialog dialog = new register_dialog();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }*/
 }

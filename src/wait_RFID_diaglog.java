@@ -14,8 +14,6 @@ public class wait_RFID_diaglog extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-
-
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -23,7 +21,6 @@ public class wait_RFID_diaglog extends JDialog {
                 onCancel();
             }
         });
-
 
         // call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
@@ -40,32 +37,16 @@ public class wait_RFID_diaglog extends JDialog {
             public void run() {
                 int mode = 1;
                 DB rc=new DB();
-                String reponse= rc.makeGETRequest(  " https://studev.groept.be/api/a22ib2d02/getMode");
-                mode= rc.get_mode(reponse);
+                mode= rc.get_mode();
                 if (mode == 0){
                     dispose();
                 }
             }
         },1000,200);
-
-
         this.pack();
     }
-
-    private void onOK() {
-        // add your code here
-        dispose();
-    }
-
     private void onCancel() {
-        // add your code here if necessary
         dispose();
     }
 
-/*    public static void main(String[] args) {
-        wait_RFID_diaglog dialog = new wait_RFID_diaglog();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }*/
 }
