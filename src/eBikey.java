@@ -153,6 +153,7 @@ public class eBikey extends JFrame{
         is_alarming= rc.get_lock_state()[1] == 1;
         if(is_alarming){
             alarm_button.setIcon(new ImageIcon("src/icon/speaker.png"));
+
         }
         else {
             alarm_button.setIcon(new ImageIcon("src/icon/mute.png"));
