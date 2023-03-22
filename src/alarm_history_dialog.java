@@ -11,8 +11,6 @@ public class alarm_history_dialog extends JDialog {
     public alarm_history_dialog() {
         setContentPane(contentPane);
         setModal(true);
-
-
         this.setIconImage(new ImageIcon("src/icon/bicycle.png").getImage());
         this.setSize(400,240);
 

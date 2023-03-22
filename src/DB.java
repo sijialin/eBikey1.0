@@ -1,27 +1,24 @@
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-
-import org.json.*;
+import java.util.ArrayList;
 
 public class DB {
-   // String url_main="https://studev.groept.be/api/";
-
+    public String url_main="https://studev.groept.be/api/a22ib2d02/";
     public String makeGETRequest(String urlName){
-        BufferedReader rd = null;
-        StringBuilder sb = null;
-        String line = null;
+        BufferedReader rd;
+        StringBuilder sb;
+        String line;
         try {
             URL url = new URL(urlName);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -87,7 +84,7 @@ public class DB {
             {
                 JSONObject curObject = array.getJSONObject(i);
                 //System.out.println("ID: " + curObject.getString("card_number") + " Name: " + curObject.getString("name"));
-             list.add("ID: " + String.valueOf(curObject.getInt("id")) + "     Name: " + curObject.getString("name"));
+             list.add("ID: " + curObject.getInt("id") + "     Name: " + curObject.getString("name"));
             }
         }
         catch (JSONException e){
@@ -95,22 +92,7 @@ public class DB {
         }
         return list;
     }
-    /*public Map<String,Integer> get_RFID_by_map(String jsonString){
-        Map<String,Integer> map=new HashMap<>();
-        try {
-            JSONArray array = new JSONArray(jsonString);
-            for (int i = 0; i < array.length(); i++)
-            {
-                JSONObject curObject = array.getJSONObject(i);
-                //System.out.println("ID: " + curObject.getString("card_number") + " Name: " + curObject.getString("name"));
-               map.put( curObject.getString("name"),curObject.getInt("cardNumber") );
-            }
-        }
-        catch (JSONException e){
-            e.printStackTrace();
-        }
-        return map;
-    }*/
+
     public ArrayList<String> get_scan_history(String jsonString){
         ArrayList<String> list=new ArrayList<>();
         try {
@@ -124,9 +106,6 @@ public class DB {
                     s+=id;
                     s+=" | Name: ";
                     String name=curObject.optString("name","Unknown");
-                   // if(name.isEmpty())
-                     //   name="unknown";
-                   // System.out.println("name");
                  s+=name;
                     if(name.length()<10){
                         for(int j=0;j<10-name.length();j++){
@@ -151,16 +130,10 @@ public class DB {
                 }
 
                 long time_int = curObject.getLong("time");
-            //    System.out.println("time:"+time_int);
+                //System.out.println("time:"+time_int);
                 Instant instant = Instant.ofEpochSecond(time_int);
                 ZoneId belgiumZoneId = ZoneId.of("Europe/Brussels");
                 LocalDateTime time = LocalDateTime.ofInstant(instant,belgiumZoneId);
-
-               /* long time_int=curObject.getInt("time");
-                Instant instant=Instant.ofEpochSecond(time_int);
-                //   ZoneId zoneId=ZoneId.of("Euro/Belgium");
-                LocalDateTime time=LocalDateTime.ofInstant(instant,ZoneId.systemDefault());*/
-                //  Date time= Date.from(instant);
                 s+=time;
                // System.out.println("a: " + String.valueOf(curObject.getInt("action")) + "     t: " + curObject.getString("time"));
                 list.add(s);
@@ -197,9 +170,6 @@ public class DB {
         }
         return list;
     }
-    public void erase_alarm_history(String jsonString){
-
-    }
     //return the state of the lock and alarm
     public int[] get_lock_state(String jsonString){
         int[] mode={0,0};
@@ -217,26 +187,6 @@ public class DB {
         }
         return mode;
     }
-    public int get_mode_lock(String jsonString){
-        int mode=0;
-        try {
-            JSONArray array = new JSONArray(jsonString);
-            for (int i = 0; i < array.length(); i++)
-            {
-                JSONObject curObject = array.getJSONObject(i);
-               mode=curObject.getInt("isLocked");
-            }
-        }
-        catch (JSONException e){
-            e.printStackTrace();
-        }
-        return mode;
-    }
-    /*public static void main(String[] args) {
-        DB rc = new DB();
-        String response = rc.makeGETRequest("https://studev.groept.be/api/a21ib2demo/all" );
-        rc.parseJSON(response);
-    }*/
 }
 
 
