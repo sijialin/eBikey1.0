@@ -75,10 +75,13 @@ public class eBikey extends JFrame{
         lock_button.setContentAreaFilled(false);
         lock_button.addActionListener(e -> {
             if(is_locked){
+                rc.makeGETRequest(rc.url_main+ "setManual");
                 rc.makeGETRequest(rc.url_main+ "scanHistory/"+"404/"+new Date().getTime()/1000+"/1");
                 rc.makeGETRequest(rc.url_main+ "unlock");
+
             }
             else {
+                rc.makeGETRequest(rc.url_main+ "setManual");
                 rc.makeGETRequest(rc.url_main+ "scanHistory/"+"404/"+new Date().getTime()/1000+"/2");
                 rc.makeGETRequest(rc.url_main+ "lock");
             }
@@ -156,6 +159,8 @@ public class eBikey extends JFrame{
                 set_lock_state();
             }
         },0,500);
+
+        //if the alarm is triggered, the background of the alarm zone will blink, attract users attention.
         Timer t=new Timer();
         t.scheduleAtFixedRate(new TimerTask() {
             @Override
