@@ -59,10 +59,12 @@ public class eBikey extends JFrame{
 
         alarm_button.addActionListener(e -> {
             if(is_alarming){
+                rc.makeGETRequest(rc.url_main+ "setAlarmManual/"+"0");
                 rc.makeGETRequest(rc.url_main+ "setAlarming/"+"0");
             }
             else {
                 //record the time that the alarm is triggered by computer
+                rc.makeGETRequest(rc.url_main+ "setAlarmManual/"+"1");
                 rc.makeGETRequest(rc.url_main+ "setAlarming/"+"1");
                 rc.makeGETRequest(rc.url_main+ "recordAlarm/"+new Date().getTime()/1000);
             }
@@ -75,15 +77,19 @@ public class eBikey extends JFrame{
         lock_button.setContentAreaFilled(false);
         lock_button.addActionListener(e -> {
             if(is_locked){
+
+               // rc.makeGETRequest(rc.url_main+ "scanHistory/"+"404/"+new Date().getTime()/1000+"/1");
+             //    rc.makeGETRequest(rc.url_main+ "unlock");
                 rc.makeGETRequest(rc.url_main+ "setManual");
-                rc.makeGETRequest(rc.url_main+ "scanHistory/"+"404/"+new Date().getTime()/1000+"/1");
-                rc.makeGETRequest(rc.url_main+ "unlock");
+              //  System.out.println("I am unlocking");
 
             }
             else {
+
+             //   rc.makeGETRequest(rc.url_main+ "scanHistory/"+"404/"+new Date().getTime()/1000+"/2");
+              //  rc.makeGETRequest(rc.url_main+ "lock");
                 rc.makeGETRequest(rc.url_main+ "setManual");
-                rc.makeGETRequest(rc.url_main+ "scanHistory/"+"404/"+new Date().getTime()/1000+"/2");
-                rc.makeGETRequest(rc.url_main+ "lock");
+              //  System.out.println("I'm locking");
             }
         });
 
